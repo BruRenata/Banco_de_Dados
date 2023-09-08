@@ -1,0 +1,37 @@
+create database empresa_db;
+
+use empresa_db;
+
+create table tb_departamento (
+    id_departamento INT NOT NULL auto_increment,
+    nome varchar (100) NOT NULL,
+    PRIMARY KEY (id_departamento)
+);
+
+create table tb_empregado (
+    id_empregado INT NOT NULL auto_increment,
+    nome VARCHAR(100) NOT NULL,
+    sexo INT,
+    salario DECIMAL(11,2),
+    data_nascimento DATE,
+    departamento_id INT,
+    PRIMARY KEY (id_empregado),
+    CONSTRAINT FK_departamentoempregado FOREIGN KEY (departamento_id) REFERENCES tb_departamento(id_departamento)
+);
+
+create table tb_projeto(
+    id_projeto INT NOT NULL auto_increment,
+    nome varchar (30) NOT NULL,
+    PRIMARY KEY (id_projeto)
+);
+
+create table tb_projeto_empregado (
+    id_projeto_empregado INT NOT NULL auto_increment,
+    empregado_id INT,
+    projeto_id INT,
+    data_inicial DATE,
+    data_final DATE,
+    PRIMARY KEY (id_projeto_empregado),
+    CONSTRAINT FK_ProjetoEmpregado FOREIGN KEY (projeto_id) REFERENCES tb_projeto(id_projeto),
+    CONSTRAINT FK_EmpregadoProjeto FOREIGN KEY (empregado_id) REFERENCES tb_empregado(id_empregado)
+);
