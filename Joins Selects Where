@@ -1,0 +1,117 @@
+use empresa_db;
+select *from tb_empregado;
+select *from tb_departamento;
+
+#1.	Todos os empregados do sexo feminino, mostrando o nome, salario, sexo e departamento.
+ 
+SELECT E.Nome, salario, sexo, D.nome as Departamento
+from tb_empregado E
+inner join tb_departamento D
+	on id_departamento = departamento_id
+    where sexo = 2;
+    
+#2. Todos os empregados com seus respectivos departamentos, 
+#inclusive os empregados sem departamentos
+
+INSERT INTO tb_empregado
+    (nome, sexo, salario, data_nascimento)
+VALUES
+    ('Testezinho', 1, 1000, '2000-03-27' );
+
+Select E.Nome, D.nome as Departamento
+from tb_empregado E
+left join tb_departamento D
+on id_departamento = departamento_id;
+
+#3. Um relatório de departamentos que não possuem empregados 
+#para contratação de novos empregados
+
+INSERT INTO tb_departamento
+    (nome)
+VALUES
+    ('Transporte');
+    
+select *from tb_departamento;
+
+Select E.Nome, D.nome as Departamento
+from tb_departamento D 
+left join tb_empregado E
+on id_departamento = departamento_id
+where id_empregado is null;
+
+#4. Todos os empregados com nome, salário, sexo e nome dos projetos Delta e Omega.
+select *from tb_projeto_empregado;
+select *from tb_projeto;
+
+select E.Nome as Nome_Funcionario, salario, sexo, P.Nome as Nome_Projeto
+from tb_projeto_empregado PE
+inner join tb_projeto P on  projeto_id = id_projeto
+inner join tb_empregado E on id_empregado = empregado_id
+where id_projeto = 4 or id_projeto = 5 ;
+
+#5.	Todos os empregados com seus respectivos departamentos, 
+#inclusive os empregados sem departamento. (ESSE REPETIDO)
+
+Select E.Nome, D.nome as Departamento
+from tb_empregado E
+left join tb_departamento D
+on id_departamento = departamento_id;
+
+#6. Todos os empregados com seus respectivos projetos, 
+#departamentos e com o salário maior que 1500.
+select *from tb_projeto_empregado;
+select *from tb_projeto;
+
+select E.Nome as Nome_Funcionario, D.nome as Departamento, salario, sexo, P.Nome as Nome_Projeto
+from tb_projeto_empregado PE
+inner join tb_projeto P on  projeto_id = id_projeto
+inner join tb_empregado E on id_empregado = empregado_id
+inner join tb_departamento D on id_departamento = departamento_id
+where salario > 1500;
+
+#7. Todos os empregados que não estão em nenhum projeto.
+select *from tb_projeto_empregado;
+
+select E.Nome as Nome_Funcionario, P.Nome as Nome_Projeto
+from tb_empregado E
+left join tb_projeto_empregado on id_empregado = empregado_id
+left join tb_projeto P on id_projeto = projeto_id
+where P.Nome is null;
+
+select E.Nome, projeto_id
+from tb_empregado E
+left join tb_projeto_empregado on id_empregado = empregado_id
+where  projeto_id is Null;
+
+#8. Todos os projetos sem nenhum empregado.
+select *from tb_projeto;
+
+select P.nome as Projeto_Sem_Colaboradores
+from tb_projeto P
+left join tb_projeto_empregado on id_projeto= projeto_id
+where empregado_id is null;
+
+#9. Todos os empregados com seus respectivos projetos, 
+#departamentos, com o salário maior que 1500 do sexo masculino.
+select *from tb_projeto_empregado;
+select *from tb_projeto;
+
+select E.Nome as Nome_Funcionario, D.nome as Departamento, salario, sexo, P.Nome as Nome_Projeto
+from tb_empregado E 
+left join tb_projeto_empregado PE on id_empregado = empregado_id
+left join tb_projeto P on  projeto_id = id_projeto
+left join tb_departamento D on id_departamento = departamento_id
+where salario > 1500 and sexo = 1;
+
+
+#10. Todos os empregados e projetos com a data inicial entre 01/01/2022 a 12/05/2022.
+select * from tb_empregado;
+select * from tb_projeto_empregado;
+select * from tb_projeto;
+
+Select E.Nome as Nome_Empregado, P.Nome as Projeto, Data_inicial
+from tb_projeto_empregado
+inner join tb_empregado E on empregado_id = id_empregado
+inner join tb_projeto P on projeto_id  = id_projeto
+where data_inicial between '2022-01-01' and '2022-05-12'
+
